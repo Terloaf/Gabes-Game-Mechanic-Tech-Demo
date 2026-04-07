@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using URC.Utility;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        _moveInput = GetDirection();
     }
     private void FixedUpdate()
     {
@@ -30,12 +31,19 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        _moveInput = context.ReadValue<Vector3>();
+ 
+
     }
 
 
     private void PlayerMovement()
     {
         _rb.MovePosition(_rb.position + _moveInput * _moveSpeed * Time.fixedDeltaTime);
+    }
+
+    private Vector3 GetDirection()
+    {
+        Vector3 worldDir = InputHelper.DesiredDirection().normalized;
+        return transform.TransformDirection(worldDir);
     }
 }
